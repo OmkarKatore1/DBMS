@@ -1,0 +1,85 @@
+CREATE DATABASE company;
+USE company;
+
+
+CREATE TABLE dept (
+    deptno INT PRIMARY KEY,
+    deptname VARCHAR(50),
+    location VARCHAR(50)
+);
+
+
+CREATE TABLE emp (
+    eno INT PRIMARY KEY,
+    ename VARCHAR(50),
+    job VARCHAR(50),
+    hiredate DATE,
+    salary INT,
+    commission INT,
+    deptno INT,
+    FOREIGN KEY (deptno) REFERENCES dept(deptno)
+);
+
+
+INSERT INTO dept VALUES
+(10,'HR','Pune'),
+(20,'Dev','Mumbai'),
+(30,'Sales','Delhi');
+
+
+
+INSERT INTO emp VALUES
+(1,'ABC','Manager','2022-01-10',50000,5000,10),
+(2,'BCD','Salesman','2021-03-15',30000,2000,30),
+(3,'CDE','Developer','2020-07-20',40000,NULL,20),
+(4,'Ishan','Salesman','2022-05-12',35000,1500,30),
+(5,'Ira','HR','2023-02-18',28000,NULL,10),
+(6,'DEF','Developer','2021-11-11',42000,NULL,20),
+(7,'GHI','Salesman','2020-08-08',32000,1800,30);
+
+
+
+SELECT MAX(salary) AS max_salary
+FROM emp
+WHERE job = 'Salesman';
+
+
+
+SELECT * FROM emp
+WHERE ename LIKE 'I%';
+
+
+
+SELECT * FROM emp
+ORDER BY salary DESC;
+
+
+SELECT hiredate,
+       AVG(salary) AS avg_salary,
+       MIN(salary) AS min_salary
+FROM emp
+WHERE deptno = 10
+GROUP BY hiredate;
+
+
+
+
+SELECT e.ename, d.deptname
+FROM emp e
+JOIN dept d ON e.deptno = d.deptno;
+
+
+
+
+SELECT d.deptname,
+       SUM(e.salary) AS total_salary
+FROM emp e
+JOIN dept d ON e.deptno = d.deptno
+GROUP BY d.deptname;
+
+
+
+SELECT e.*
+FROM emp e
+JOIN dept d ON e.deptno = d.deptno
+WHERE d.deptname = 'Dev';
