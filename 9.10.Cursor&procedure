@@ -1,0 +1,46 @@
+CREATE TABLE orders (
+    id NUMBER,
+    name VARCHAR2(50),
+    product VARCHAR2(50),
+    amt NUMBER
+);
+
+CREATE TABLE customer_total (
+    name VARCHAR2(50),
+    total_sales NUMBER
+);
+
+CREATE TABLE customer_total (
+    name VARCHAR2(50),
+    total_sales NUMBER
+);
+
+INSERT INTO orders VALUES (1,'ABC','Laptop',50000);
+INSERT INTO orders VALUES (2,'ABC','Mobile',20000);
+INSERT INTO orders VALUES (3,'BCD','TV',40000);
+INSERT INTO orders VALUES (4,'BCD','Shoes',3000);
+INSERT INTO orders VALUES (5,'CDE','Shirt',2000);
+
+
+SET SERVEROUTPUT ON;
+DECLARE
+    CURSOR c1 IS 
+        SELECT name, SUM(amt) AS total
+        FROM orders
+        GROUP BY name;
+    v_name orders.name%TYPE;
+    v_total NUMBER;
+BEGIN
+    OPEN c1;
+    LOOP
+        FETCH c1 INTO v_name, v_total;
+        EXIT WHEN c1%NOTFOUND;
+        INSERT INTO customer_total VALUES (v_name, v_total);
+        DBMS_OUTPUT.PUT_LINE('Customer: ' || v_name || 
+                             ' Total: ' || v_total);
+    END LOOP;
+    CLOSE c1;
+SELECT * FROM customer_total;
+
+END;
+/
