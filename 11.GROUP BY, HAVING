@@ -1,0 +1,76 @@
+CREATE DATABASE SalesDB;
+USE SalesDB;
+
+CREATE TABLE Sales (
+    sale_id INT PRIMARY KEY,
+    product_name VARCHAR(50),
+    region VARCHAR(50),
+    quantity INT,
+    price INT
+);
+
+
+INSERT INTO Sales VALUES
+(1,'Laptop','North',2,50000),
+(2,'Laptop','South',1,52000),
+(3,'Mobile','North',5,20000),
+(4,'Mobile','West',3,18000),
+(5,'TV','East',2,40000),
+(6,'TV','South',1,42000),
+(7,'Shoes','North',10,2000),
+(8,'Shoes','West',8,2200),
+(9,'Watch','East',6,5000),
+(10,'Watch','South',4,5500),
+(11,'Laptop','West',1,51000),
+(12,'Mobile','East',2,21000),
+(13,'TV','North',1,39000),
+(14,'Shoes','East',5,2100),
+(15,'Watch','West',3,5200
+
+SELECT * FROM Sales;
+
+
+SELECT product_name,
+       SUM(quantity * price) AS total_sales
+FROM Sales
+GROUP BY product_name;
+
+
+
+SELECT region,
+       AVG(quantity * price) AS avg_sales
+FROM Sales
+GROUP BY region;
+
+
+
+SELECT 
+    MAX(quantity * price) AS highest_sale,
+    MIN(quantity * price) AS lowest_sale
+FROM Sales;
+
+
+
+SELECT product_name, region,
+       SUM(quantity * price) AS total_sales
+FROM Sales
+GROUP BY product_name, region;
+
+
+
+SELECT product_name,
+       SUM(quantity * price) AS total_sales
+FROM Sales
+GROUP BY product_name
+HAVING total_sales > 5000;
+
+
+
+SELECT region,
+       AVG(quantity * price) AS avg_sales
+FROM Sales
+GROUP BY region
+HAVING avg_sales < 1000;
+
+
+
