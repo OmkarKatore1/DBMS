@@ -1,0 +1,55 @@
+CREATE DATABASE ShoppingDB;
+USE ShoppingDB;
+
+CREATE TABLE Customer (
+    c_id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    address VARCHAR(100),
+    phno VARCHAR(15),
+    email VARCHAR(50) UNIQUE
+);
+
+CREATE TABLE Product (
+    p_id INT PRIMARY KEY,
+    pname VARCHAR(50),
+    c_id INT,
+    price INT NOT NULL CHECK (price > 0),
+    qty INT CHECK (qty >= 1),
+    FOREIGN KEY (c_id) REFERENCES Customer(c_id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Product (
+    p_id INT PRIMARY KEY,
+    pname VARCHAR(50),
+    c_id INT,
+    price INT NOT NULL CHECK (price > 0),
+    qty INT CHECK (qty >= 1),
+    FOREIGN KEY (c_id) REFERENCES Customer(c_id)
+    ON DELETE CASCADE
+);
+
+
+
+INSERT INTO Product VALUES
+(101,'Laptop',1,50000,2),
+(102,'Mobile',2,20000,3),
+(103,'Shirt',3,2000,5),
+(104,'Shoes',4,3000,2),
+(105,'TV',5,40000,1),
+(106,'Watch',6,5000,4),
+
+SELECT * FROM Customer;
+SELECT * FROM Product;
+
+INSERT INTO Product VALUES (109,'Test2',1,1000,0);
+INSERT INTO Customer VALUES (8,'XYZ','Pune','8888888888','abc@gmail.com');
+DELETE FROM Customer WHERE c_id = 1;
+SELECT * FROM Product;
+
+ALTER TABLE Customer ADD city VARCHAR(50);
+RENAME TABLE Product TO Products;
+TRUNCATE TABLE Products;
+DROP TABLE Products;
+(107,'Headphones',7,1500,6);
+SELECT * FROM Customer;SELECT * FROM Customer;
