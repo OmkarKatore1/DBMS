@@ -1,0 +1,67 @@
+CREATE TABLE Stud_Marks (
+    name VARCHAR2(50),
+    total_marks NUMBER
+);
+
+
+CREATE TABLE Result (
+    roll NUMBER,
+    name VARCHAR2(50),
+    class VARCHAR2(50)
+);
+
+
+INSERT INTO Stud_Marks VALUES ('ABC', 1200);
+INSERT INTO Stud_Marks VALUES ('BCD', 950);
+INSERT INTO Stud_Marks VALUES ('CDE', 870);
+INSERT INTO Stud_Marks VALUES ('DEF', 800);
+INSERT INTO Stud_Marks VALUES ('EFG', 1000);
+
+
+SET SERVEROUTPUT ON;
+CREATE OR REPLACE PROCEDURE proc_Grade IS
+    CURSOR c1 IS SELECT name, total_marks FROM Stud_Marks;
+    v_name Stud_Marks.name%TYPE;
+    v_marks Stud_Marks.total_marks%TYPE;
+    v_class VARCHAR2(50);
+    v_roll NUMBER := 1;
+BEGIN
+    OPEN c1;
+    LOOP
+        FETCH c1 INTO v_name, v_marks;
+        EXIT WHEN c1%NOTFOUND;
+        -- Classification Logic
+        IF v_marks BETWEEN 990 AND 1500 THEN
+            v_class := 'Distinction';
+        ELSIF v_marks BETWEEN 900 AND 989 THEN
+            v_class := 'First Class';
+        ELSIF v_marks BETWEEN 825 AND 899 THEN
+            v_class := 'Higher Second Class';
+        ELSE
+            v_class := 'Pass';
+        END IF;
+        -- Insert into Result Table
+        INSERT INTO Result VALUES (v_roll, v_name, v_class);
+        -- Display Output
+        DBMS_OUTPUT.PUT_LINE('Name: ' || v_name || 
+                             ' Marks: ' || v_marks || 
+                             ' Class: ' || v_class);
+        v_roll := v_roll + 1;
+    END LOOP;
+    CLOSE c1;
+END;
+/
+
+
+
+BEGIN
+    proc_Grade;
+END;
+/
+
+
+
+SELECT * FROM Result;
+
+
+
