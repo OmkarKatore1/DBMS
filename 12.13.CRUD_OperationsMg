@@ -1,0 +1,47 @@
+mongosh
+use StudentDB
+
+db.students.save({
+  _id: 1,
+  name: "ABC",
+  age: 20,
+  course: "CS"
+})
+
+db.students.insertMany([
+ {_id:2, name:"BCD", age:21, course:"IT"},
+ {_id:3, name:"CDE", age:22, course:"CS"},
+ {_id:4, name:"DEF", age:20, course:"ENTC"},
+ {_id:5, name:"EFG", age:23, course:"IT"}
+])
+
+db.students.find()
+
+db.students.find({
+ $and: [
+   { course: "IT" },
+   { age: { $gt: 20 } }
+ ]
+})
+
+db.students.find({
+ $or: [
+   { course: "CS" },
+   { age: 20 }
+ ]
+})
+
+
+db.students.updateOne(
+ { _id: 1 },
+ { $set: { age: 25 } }
+)
+
+db.students.updateMany(
+ { course: "IT" },
+ { $set: { course: "Information Tech" } }
+)
+
+db.students.deleteOne({ _id: 4 })
+db.students.deleteMany({ age: { $gt: 22 } })
+db.students.find().pretty()
