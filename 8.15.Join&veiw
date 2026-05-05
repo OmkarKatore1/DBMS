@@ -1,0 +1,101 @@
+CREATE DATABASE StudentDB;
+USE StudentDB;
+
+CREATE TABLE Students (
+    s_id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) UNIQUE
+);
+
+CREATE TABLE Courses (
+    c_id INT PRIMARY KEY,
+    cname VARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE Enrollments (
+    e_id INT PRIMARY KEY,
+    s_id INT,
+    c_id INT,
+    marks INT,
+    FOREIGN KEY (s_id) REFERENCES Students(s_id),
+    FOREIGN KEY (c_id) REFERENCES Courses(c_id)
+);
+
+INSERT INTO Students VALUES
+(1,'ABC','abc@gmail.com'),
+(2,'BCD','bcd@gmail.com'),
+(3,'CDE','cde@gmail.com'),
+(4,'DEF','def@gmail.com'),
+(5,'EFG','efg@gmail.com');
+
+INSERT INTO Courses VALUES
+(101,'DBMS'),
+(102,'OS'),
+(103,'CN'),
+(104,'AI'),
+(105,'ML');
+
+INSERT INTO Enrollments VALUES
+(1,1,101,80),
+(2,2,102,70),
+(3,3,103,85),
+(4,1,104,90),
+(5,4,101,60);
+
+SELECT s.name, c.cname, e.marks
+FROM Students s
+INNER JOIN Enrollments e ON s.s_id = e.s_id
+INNER JOIN Courses c ON e.c_id = c.c_id;
+
+
+SELECT s.name, c.cname, e.marks
+FROM Students s
+LEFT JOIN Enrollments e ON s.s_id = e.s_id
+LEFT JOIN Courses c ON e.c_id = c.c_id;
+
+
+SELECT s.name, c.cname, e.marks
+FROM Students s
+RIGHT JOIN Enrollments e ON s.s_id = e.s_id
+RIGHT JOIN Courses c ON e.c_id = c.c_id;
+
+
+SELECT s.name, c.cname, e.marks
+FROM Students s
+LEFT JOIN Enrollments e ON s.s_id = e.s_id
+LEFT JOIN Courses c ON e.c_id = c.c_id
+UNION
+SELECT s.name, c.cname, e.marks
+FROM Students s
+RIGHT JOIN Enrollments e ON s.s_id = e.s_id
+RIGHT JOIN Courses c ON e.c_id = c.c_id;
+
+
+
+SELECT s.name, c.cname, e.marks
+FROM Students s
+LEFT JOIN Enrollments e ON s.s_id = e.s_id
+LEFT JOIN Courses c ON e.c_id = c.c_id
+UNION
+SELECT s.name, c.cname, e.marks
+FROM Students s
+RIGHT JOIN Enrollments e ON s.s_id = e.s_id
+RIGHT JOIN Courses c ON e.c_id = c.c_id;
+
+CREATE VIEW Student_Course_View AS
+SELECT s.name, c.cname, e.marks
+FROM Students s
+JOIN Enrollments e ON s.s_id = e.s_id
+JOIN Courses c ON e.c_id = c.c_id;
+
+
+CREATE VIEW High_Marks_View AS
+SELECT * FROM Student_Course_View
+WHERE marks > 75;
+
+
+SELECT * FROM Student_Course_View;
+SELECT * FROM High_Marks_View;
+
+DROP VIEW High_Marks_View;
