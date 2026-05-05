@@ -1,0 +1,45 @@
+mongosh
+use OrderDB
+switched to db OrderDB
+db.orders.insertMany([
+ {Id:1, name:"ABC", product:"Laptop", category:"Electronics", amt:50000, date:"2024-01-01"},
+ {Id:2, name:"BCD", product:"Mobile", category:"Electronics", amt:20000, date:"2024-01-02"},
+ {Id:3, name:"CDE", product:"Shirt", category:"Clothing", amt:2000, date:"2024-01-03"},
+ {Id:4, name:"DEF", product:"Shoes", category:"Clothing", amt:3000, date:"2024-01-04"},
+ {Id:5, name:"EFG", product:"TV", category:"Electronics", amt:40000, date:"2024-01-05"},
+ {Id:6, name:"FGH", product:"Rice", category:"Grocery", amt:1500, date:"2024-01-06"},
+ {Id:7, name:"GHI", product:"Wheat", category:"Grocery", amt:1200, date:"2024-01-07"}
+])
+db.orders.find().pretty()
+
+
+db.orders.aggregate([
+ {
+   $group: {
+     _id: "$category",
+     total_sales: { $sum: "$amt" }
+   }
+ }
+])
+
+db.orders.aggregate([
+ {
+   $group: {
+     _id: "$category",
+     avg_amount: { $avg: "$amt" }
+   }
+ }
+])
+
+
+db.orders.aggregate([
+ {
+   $group: {
+     _id: "$category",
+     total_sales: { $sum: "$amt" }
+   }
+ },
+ {
+   $sort: { total_sales: -1 }
+ }
+])
